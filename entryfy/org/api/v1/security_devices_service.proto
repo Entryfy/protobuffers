@@ -1,9 +1,9 @@
 syntax = "proto3";
 
 package entryfy.org.api.v1;
-import "entryfy/org/api/v1/entities.proto";
+import "entities.proto";
 
-//option go_package = "github.com/entryfy/org/api/v1;org-api";
+option go_package = "pkg/entryfy/org/api/v1";
 option java_multiple_files = true;
 option java_package = "com.entryfy.org.api.v1";
 option csharp_namespace = "Entryfy.Org.Api.V1";
