@@ -12,6 +12,8 @@ option ruby_package = "Entryfy::Org::Api::V1";
 service BizOperationsService {
     rpc GetBizOperations (GetBizOperationsRequest) returns (GetBizOperationsResponse) {
     }
+    rpc WatchBizOperationChanges (WatchBizOperationChangesRequest) returns (WatchBizOperationChangesResponse) {
+    }
 }
 
 message GetBizOperationsRequest {
@@ -21,4 +23,13 @@ message GetBizOperationsRequest {
 
 message GetBizOperationsResponse {
     repeated BizOperation biz_operations = 1;
+}
+
+message WatchBizOperationChangesRequest {
+    string organization_slug = 1;
+    repeated string biz_operation_uuids = 2; // Specifies biz operations to watch. all biz operation's statuses will be returned if UUIDs not provided
+}
+
+message WatchBizOperationChangesResponse {
+    repeated BizOperationStatus biz_operation_statuses = 1;
 }

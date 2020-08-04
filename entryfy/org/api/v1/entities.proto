@@ -151,11 +151,11 @@ message PincodeMapping {
     string uuid = 2;
     uint64 pincode_id = 3;
     uint64 security_device_id = 4;
-    uint64 user_group_id = 5;
+    uint64 user_group_id = 5; // DEPRECATED
     google.protobuf.Timestamp created_at = 6;
     google.protobuf.Timestamp updated_at = 7;
     string security_device_uuid = 8;
-    string user_group_uuid = 9;
+    string user_group_uuid = 9; // DEPRECATED
 }
 
 message KeyCard {
@@ -184,11 +184,11 @@ message KeyCardMapping {
     string uuid = 2;
     uint64 key_card_id = 3;
     uint64 security_device_id = 4;
-    uint64 user_group_id = 5;
+    uint64 user_group_id = 5; // DEPRECATED
     google.protobuf.Timestamp created_at = 6;
     google.protobuf.Timestamp updated_at = 7;
     string security_device_uuid = 8;
-    string user_group_uuid = 9;
+    string user_group_uuid = 9; // DEPRECATED
 }
 
 message Schedule {
@@ -493,6 +493,24 @@ message DoorStatus {
         STATUS_UNLOCKED = 3;
         STATUS_LOCKED = 4;
         STATUS_DOUBLE_LOCKED = 5;
+    }
+    Status status = 3;
+    google.protobuf.Timestamp created_at = 4;
+    google.protobuf.Timestamp updated_at = 5;
+}
+
+message BizOperationStatus {
+    string uuid = 1;
+    string biz_operation_uuid = 2;
+    enum Status {
+        STATUS_UNSPECIFIED = 0;
+        STATUS_PENDING = 1;
+        STATUS_FINISHED = 2;
+        STATUS_FAILED = 3;
+        STATUS_PROCESSING = 4;
+        STATUS_ACCEPTED = 5;
+        STATUS_SUCCESS_PENDING = 6;
+        STATUS_FAILURE_PENDING = 7;
     }
     Status status = 3;
     google.protobuf.Timestamp created_at = 4;
