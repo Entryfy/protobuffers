@@ -312,7 +312,7 @@ message UserGroup {
 }
 
 message AccessLog {
-    uint64 id = 1; // Obsolete, use UUID instead
+    string uuid = 1;
     enum AccessDescription {
         ACCESS_DESCRIPTION_UNSPECIFIED = 0;
         ACCESS_DESCRIPTION_ACCESS_GRANTED = 1;
@@ -320,27 +320,38 @@ message AccessLog {
     }
     AccessDescription access_description = 2;
     google.protobuf.Timestamp time = 3;
-    uint64 section_id = 4;
-    uint64 site_id = 5;
-    uint64 security_device_id = 6;
-    uint64 user_id = 7;
-    Pincode pincode = 8;
+    string door_uuid = 4;
+    string section_uuid = 5;
+    string site_uuid = 6;
     enum Direction {
         DIRECTION_UNSPECIFIED = 0;
         DIRECTION_IN = 1;
         DIRECTION_OUT = 2;
         DIRECTION_UNDEFINED = 3;
     }
-    Direction direction = 9;
-    string user_email = 10;
-    string user_name = 11;
-    string uuid = 12;
-    string security_device_uuid = 13;
-    string user_uuid = 14;
-    string pincode_uuid = 15;
-    string reason = 16;
-    string auth_type = 17;
-    string pincode_value = 18;
+    Direction direction = 7;
+    string reason = 8; // Deny reason
+    enum AuthType {
+        AUTH_TYPE_UNSPECIFIED = 0;
+        AUTH_TYPE_REX = 1; // Door open button
+        AUTH_TYPE_CARD = 2; // Show QR
+        AUTH_TYPE_PIN = 3; // PIN
+        AUTH_TYPE_CARD_PLUS_PIN = 4; // Show QR, enter pin on keypad
+        AUTH_TYPE_SCAN = 5; // Scan QR on the door
+        AUTH_TYPE_SCAN_PLUS_KEYPAD = 6; // Scan QR on the door, enter pin on keypad
+        AUTH_TYPE_SCAN_PLUS_PHONE = 7; // Scan QR on the door, enter pin on phone's virtual keypad
+        AUTH_TYPE_KEY_CARD = 8; // NFC Card
+        AUTH_TYPE_REMOTE = 9; // Open door remotely
+        AUTH_TYPE_REMOTE_PLUS_PHONE = 10; // Open door remotely after entering pin on phone's virtual keypad
+        AUTH_TYPE_CARD_PLUS_PHONE = 11; // Show QR, enter pin on phone's virtual keypad
+        AUTH_TYPE_PASSCODE = 12;
+        AUTH_TYPE_KEY_CARD_PLUS_PIN = 13; // NFC Card, enter pin on keypad
+    }
+    AuthType auth_type = 9;
+    string user_uuid = 10;
+    string user_email = 11; // Could be also taken from the user entity
+    string user_name = 12; // Could be also taken from the user entity
+    string pincode_uuid = 13;
 }
 
 message IndoorSession {
