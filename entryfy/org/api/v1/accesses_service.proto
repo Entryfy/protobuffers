@@ -35,7 +35,7 @@ message AccessUserContainer {
 }
 
 message AccessDoorContainer {
-    string security_device_uuid = 1;
+    string door_uuid = 1;
     bool lock_unlock_enabled = 2;
     repeated string in_auth_types = 3;
     repeated string out_auth_types = 4;

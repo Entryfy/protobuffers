@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package entryfy.org.api.v1;
 import "entryfy/org/api/v1/entities.proto";
+import "google/protobuf/timestamp.proto";
 
 option go_package = "pkg/entryfy/org/api/v1";
 option java_multiple_files = true;
@@ -31,5 +32,21 @@ message WatchBizOperationChangesRequest {
 }
 
 message WatchBizOperationChangesResponse {
-    repeated BizOperationStatus biz_operation_statuses = 1;
+    message Status {
+        string biz_operation_uuid = 1;
+        enum Status {
+            STATUS_UNSPECIFIED = 0;
+            STATUS_PENDING = 1;
+            STATUS_FINISHED = 2;
+            STATUS_FAILED = 3;
+            STATUS_PROCESSING = 4;
+            STATUS_ACCEPTED = 5;
+            STATUS_SUCCESS_PENDING = 6;
+            STATUS_FAILURE_PENDING = 7;
+        }
+        Status status = 2;
+        google.protobuf.Timestamp updated_at = 3;
+    }
+
+    repeated Status biz_operation_statuses = 1;
 }

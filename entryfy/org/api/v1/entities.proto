@@ -10,7 +10,7 @@ option csharp_namespace = "Entryfy.Org.Api.V1";
 option ruby_package = "Entryfy::Org::Api::V1";
 
 message BizOperation {
-    uint64 id = 1; // Obsolete, use UUID instead
+    uint64 id = 1 [deprecated=true]; // Obsolete, use UUID instead
     string uuid = 2;
     enum Kind {
         KIND_UNSPECIFIED = 0;
@@ -49,8 +49,11 @@ message BizOperation {
         KIND_CREATE_TEMPORARY_ACCESS = 33;
         KIND_UPDATE_TEMPORARY_ACCESS = 34;
         KIND_DELETE_TEMPORARY_ACCESS = 35;
+        KIND_CREATE_ACCESSES = 36;
+        KIND_UPDATE_ACCESSES = 37;
+        KIND_DELETE_ACCESSES = 38;
     }
-    Kind kind = 3;
+    Kind kind = 3 [deprecated=true];
     enum Status {
         STATUS_UNSPECIFIED = 0;
         STATUS_PENDING = 1;
@@ -63,7 +66,7 @@ message BizOperation {
     google.protobuf.Timestamp created_at = 5;
     google.protobuf.Timestamp updated_at = 6;
     map<string, string> errors = 7;
-    string payload = 8;
+    string payload = 8 [deprecated=true];
 }
 
 // Organization settings
@@ -82,7 +85,7 @@ message Organization {
 }
 
 message User {
-    uint64 id = 1; // Obsolete, use UUID instead
+    uint64 id = 1 [deprecated=true]; // Obsolete, use UUID instead
     string first_name = 2;
     string last_name = 3;
     string email = 4;
@@ -110,7 +113,7 @@ message User {
         POST_LOGIN_SCREEN_TYPE_SETTINGS = 5;
         POST_LOGIN_SCREEN_TYPE_SCAN_QR = 6;
     }
-    PostLoginScreenType post_login_screen_type = 11;
+    PostLoginScreenType post_login_screen_type = 11 [deprecated=true];
     map<string, string> preferences = 12;
     repeated Pincode pincodes = 13;
     repeated KeyCard key_cards = 14;
@@ -121,7 +124,7 @@ message User {
 }
 
 message Pincode {
-    uint64 id = 1; // Obsolete, use UUID instead
+    uint64 id = 1 [deprecated=true]; // Obsolete, use UUID instead
     enum Kind {
         KIND_UNSPECIFIED = 0;
         KIND_DEFAULT = 1;
@@ -147,7 +150,7 @@ message Pincode {
 }
 
 message PincodeMapping {
-    uint64 id = 1; // Obsolete, use UUID instead
+    uint64 id = 1 [deprecated=true]; // Obsolete, use UUID instead
     string uuid = 2;
     uint64 pincode_id = 3;
     uint64 security_device_id = 4;
@@ -159,7 +162,7 @@ message PincodeMapping {
 }
 
 message KeyCard {
-    uint64 id = 1; // Obsolete, use UUID instead
+    uint64 id = 1 [deprecated=true]; // Obsolete, use UUID instead
     string nr = 2;
     string value = 3;
     string label = 4;
@@ -180,7 +183,7 @@ message KeyCard {
 }
 
 message KeyCardMapping {
-    uint64 id = 1; // Obsolete, use UUID instead
+    uint64 id = 1 [deprecated=true]; // Obsolete, use UUID instead
     string uuid = 2;
     uint64 key_card_id = 3;
     uint64 security_device_id = 4;
@@ -192,7 +195,7 @@ message KeyCardMapping {
 }
 
 message Schedule {
-    uint64 id = 1; // Obsolete, use UUID instead
+    uint64 id = 1 [deprecated=true]; // Obsolete, use UUID instead
     bool default = 2;
     string name = 3;
     string description = 4;
@@ -216,8 +219,8 @@ message Schedule {
 }
 
 message SecurityDevice {
-    uint64 id = 1; // Obsolete, use UUID instead
-    uint64 parent_id = 2;
+    uint64 id = 1 [deprecated=true]; // Obsolete, use UUID instead
+    uint64 parent_id = 2 [deprecated=true];
     string name = 3;
     string description = 4;
     enum Kind {
@@ -245,7 +248,7 @@ message SecurityDevice {
 }
 
 message SecurityCamera {
-    uint64 id = 1; // Obsolete, use UUID instead
+    uint64 id = 1 [deprecated=true]; // Obsolete, use UUID instead
     string controller_login = 2;
     string controller_password = 3;
     string controller_url = 4;
@@ -269,7 +272,7 @@ message SecurityCamera {
 }
 
 message UserGroup {
-    uint64 id = 1; // Obsolete, use UUID instead
+    uint64 id = 1 [deprecated=true]; // Obsolete, use UUID instead
     string name = 2;
     bool enabled = 3;
     google.protobuf.Timestamp valid_from = 4;
@@ -355,7 +358,7 @@ message AccessLog {
 }
 
 message IndoorSession {
-    uint64 id = 1; // Obsolete, use UUID instead
+    uint64 id = 1 [deprecated=true]; // Obsolete, use UUID instead
     google.protobuf.Timestamp start_time = 2;
     google.protobuf.Timestamp end_time = 3;
     enum Kind {
@@ -372,7 +375,7 @@ message IndoorSession {
 }
 
 message UserGroupSet {
-    uint64 id = 1; // Obsolete, use UUID instead
+    uint64 id = 1 [deprecated=true]; // Obsolete, use UUID instead
     string name = 2;
     string description = 3;
     repeated UserGroup user_groups = 4;
@@ -383,7 +386,7 @@ message UserGroupSet {
 }
 
 message Checkpoint {
-    uint64 id = 1; // Obsolete, use UUID instead
+    uint64 id = 1 [deprecated=true]; // Obsolete, use UUID instead
     string name = 2;
     string description = 3;
     enum Status {
@@ -472,7 +475,7 @@ message Access {
 message AccessDoor {
     string uuid = 1;
     string access_uuid = 2;
-    string security_device_uuid = 3;
+    string door_uuid = 3;
     bool lock_unlock_enabled = 4;
     repeated string in_auth_types = 5;
     repeated string out_auth_types = 6;
@@ -504,24 +507,6 @@ message DoorStatus {
         STATUS_UNLOCKED = 3;
         STATUS_LOCKED = 4;
         STATUS_DOUBLE_LOCKED = 5;
-    }
-    Status status = 3;
-    google.protobuf.Timestamp created_at = 4;
-    google.protobuf.Timestamp updated_at = 5;
-}
-
-message BizOperationStatus {
-    string uuid = 1;
-    string biz_operation_uuid = 2;
-    enum Status {
-        STATUS_UNSPECIFIED = 0;
-        STATUS_PENDING = 1;
-        STATUS_FINISHED = 2;
-        STATUS_FAILED = 3;
-        STATUS_PROCESSING = 4;
-        STATUS_ACCEPTED = 5;
-        STATUS_SUCCESS_PENDING = 6;
-        STATUS_FAILURE_PENDING = 7;
     }
     Status status = 3;
     google.protobuf.Timestamp created_at = 4;
