@@ -59,6 +59,7 @@ message AccessBody {
     repeated AccessDoorContainer doors = 10;
     repeated AccessUserContainer users = 11;
     bool welcome_email_required = 12;
+    string description = 13;
 }
 
 message CreateAccessesRequest {
