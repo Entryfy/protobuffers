@@ -52,6 +52,11 @@ message BizOperation {
         KIND_CREATE_ACCESSES = 36;
         KIND_UPDATE_ACCESSES = 37;
         KIND_DELETE_ACCESSES = 38;
+        KIND_CREATE_USERS = 39;
+        KIND_UPDATE_USERS = 40;
+        KIND_DELETE_USERS = 41;
+        KIND_UPDATE_PINCODES = 42;
+        KIND_ASSIGN_KEY_CARDS = 43;
     }
     Kind kind = 3 [deprecated=true];
     enum Status {
@@ -470,6 +475,7 @@ message Access {
     Schedule schedule = 10;
     repeated AccessDoor doors = 11;
     repeated AccessUser users = 12;
+    string description = 13;
 }
 
 message AccessDoor {
@@ -507,6 +513,7 @@ message DoorStatus {
         STATUS_UNLOCKED = 3;
         STATUS_LOCKED = 4;
         STATUS_DOUBLE_LOCKED = 5;
+        STATUS_OPEN = 6;
     }
     Status status = 3;
     google.protobuf.Timestamp created_at = 4;
