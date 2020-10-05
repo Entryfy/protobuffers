@@ -13,6 +13,8 @@ option ruby_package = "Entryfy::Org::Api::V1";
 service AccessLogsService {
     rpc GetAccessLogs (GetAccessLogsRequest) returns (GetAccessLogsResponse) {
     }
+    rpc WatchAccessLogs (WatchAccessLogsRequest) returns (WatchAccessLogsResponse) {
+    }
 }
 
 message GetAccessLogsRequest {
@@ -25,4 +27,13 @@ message GetAccessLogsRequest {
 message GetAccessLogsResponse {
     repeated AccessLog access_logs = 1;
     string csv_url = 2;
+}
+
+message WatchAccessLogsRequest {
+    string organization_slug = 1;
+    repeated string user_uuids = 2;
+}
+
+message WatchAccessLogsResponse {
+    repeated AccessLog access_logs = 1;
 }
