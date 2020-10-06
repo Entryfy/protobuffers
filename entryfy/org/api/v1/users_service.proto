@@ -60,6 +60,7 @@ message CreateUsersRequest {
 
   string organization_slug = 1;
   repeated CreateUser users = 2;
+  bool send_welcome_email = 3; // Non-mandatory
 }
 
 message CreateUsersResponse {
