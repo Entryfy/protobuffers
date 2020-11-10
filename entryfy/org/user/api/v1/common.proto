@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package entryfy.org.user.api.v1;
+
+option go_package = "pkg/entryfy/org/user/api/v1";
+option java_multiple_files = true;
+option java_package = "com.entryfy.org.user.api.v1";
+option csharp_namespace = "Entryfy.Org.User.Api.V1";
+option ruby_package = "Entryfy::Org::User::Api::V1";
+
+// Extra request data, used mostly to provide auxiliary mobile data
+message RequestData {
+  double latitude = 1; // User geo latitude if distance check is enabled, non-mandatory
+  double longitude = 2; // User geo longitude if distance check is enabled, non-mandatory
+  string app_platform = 3; // App platform/name, e.g. "Entryfy iOS"
+  string app_version = 4; // App version, e.g. current (mobile) app version like "1.2.3"
+  map<string, string> payload = 5; // Extra data to consider, could be used for debugging purposes
+}
