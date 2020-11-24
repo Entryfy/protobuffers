@@ -13,7 +13,7 @@ option ruby_package = "Entryfy::Org::Api::V1";
 service BizOperationsService {
     rpc GetBizOperations (GetBizOperationsRequest) returns (GetBizOperationsResponse) {
     }
-    rpc WatchBizOperationChanges (WatchBizOperationChangesRequest) returns (WatchBizOperationChangesResponse) {
+    rpc WatchBizOperationChanges (WatchBizOperationChangesRequest) returns (stream WatchBizOperationChangesResponse) {
     }
 }
 
