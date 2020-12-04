@@ -13,7 +13,7 @@ option ruby_package = "Entryfy::Org::Api::V1";
 service AccessLogsService {
     rpc GetAccessLogs (GetAccessLogsRequest) returns (GetAccessLogsResponse) {
     }
-    rpc WatchAccessLogs (WatchAccessLogsRequest) returns (WatchAccessLogsResponse) {
+    rpc WatchAccessLogs (WatchAccessLogsRequest) returns (stream WatchAccessLogsResponse) {
     }
 }
 
