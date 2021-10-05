@@ -15,6 +15,17 @@ service AccessLogsService {
     }
     rpc WatchAccessLogs (WatchAccessLogsRequest) returns (stream WatchAccessLogsResponse) {
     }
+    rpc MonthlyAccessCount (MonthlyAccessCountRequest) returns (MonthlyAccessCountResponse) {
+    }
+    rpc DailyAccessCount (DailyAccessCountRequest) returns (DailyAccessCountResponse) {
+    }
+    rpc LastTenAccessLogs (LastTenAccessLogsRequest) returns (LastTenAccessLogsResponse) {
+    }
+}
+
+message AccessCount {
+    repeated int32 granted_count = 1;
+    repeated int32 denied_count = 2;
 }
 
 message GetAccessLogsRequest {
@@ -35,5 +46,29 @@ message WatchAccessLogsRequest {
 }
 
 message WatchAccessLogsResponse {
+    repeated AccessLog access_logs = 1;
+}
+
+message MonthlyAccessCountRequest {
+    string organization_slug = 1;
+}
+
+message MonthlyAccessCountResponse {
+    AccessCount access_count = 1;
+}
+
+message DailyAccessCountRequest {
+    string organization_slug = 1;
+}
+
+message DailyAccessCountResponse {
+    AccessCount access_count = 1;
+}
+
+message LastTenAccessLogsRequest {
+    string organization_slug = 1;
+}
+
+message LastTenAccessLogsResponse {
     repeated AccessLog access_logs = 1;
 }

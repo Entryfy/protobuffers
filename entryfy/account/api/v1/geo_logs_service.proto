@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package entryfy.account.api.v1;
+import "google/protobuf/timestamp.proto";
+
+option go_package = "pkg/entryfy/account/api/v1";
+option java_multiple_files = true;
+option java_package = "com.entryfy.account.api.v1";
+option csharp_namespace = "Entryfy.Account.Api.V1";
+option ruby_package = "Entryfy::Account::Api::V1";
+
+service GeoLogsService {
+  rpc CreateGeoLog (CreateGeoLogRequest) returns (CreateGeoLogResponse) {
+  }
+  rpc GetGeoLogs (GetGeoLogsRequest) returns (GetGeoLogsResponse) {
+  }
+}
+
+message CreateGeoLogRequest {
+  double latitude = 1; // Mandatory
+  double longitude = 2; // Mandatory
+}
+
+message CreateGeoLogResponse {
+
+}
+
+message GetGeoLogsRequest {
+  uint32 limit = 1; // Only 10 last logs returned if limit not set
+}
+
+message GetGeoLogsResponse {
+  message GeoLog {
+    double latitude = 1; // Mandatory
+    double longitude = 2; // Mandatory
+    google.protobuf.Timestamp created_at = 3;
+  }
+  repeated GeoLog geo_logs = 1;
+}

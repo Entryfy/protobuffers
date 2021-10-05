@@ -21,12 +21,30 @@ service UsersService {
   }
   rpc ResendCredentials (ResendCredentialsRequest) returns (ResendCredentialsResponse) {
   }
-  rpc AssignKeyCards(AssignKeyCardsRequest) returns (AssignKeyCardsResponse) {}
+  rpc AssignKeyCards (AssignKeyCardsRequest) returns (AssignKeyCardsResponse) {}
+
+  rpc GetUserAccesses(GetUserAccessesRequest) returns (GetUserAccessesResponse) {
+
+  }
+}
+
+message GetUserAccessesRequest {
+  string organization_slug = 1;
+  string uuid = 2; // User UUID
+}
+
+message GetUserAccessesResponse {
+  message Access {
+    string uuid = 1;
+    string name = 2;
+  }
+  repeated Access accesses = 1;
 }
 
 message GetUsersRequest {
   string organization_slug = 1;
   repeated string uuids = 2; // Send an empty array to fetch all users
+  bool skip_credentials = 3; // Credential mappings to doors are not sent when true
 }
 
 message GetUsersResponse {
@@ -39,6 +57,12 @@ message CreateUsersRequest {
     string value = 2;
     string nr = 3; // Mandatory
     string label = 4;
+  }
+
+  message CreatePincode {
+    string uuid = 1;
+    string value = 2; // Mandatory
+    string label = 3;
   }
 
   message CreateUser {
@@ -56,6 +80,7 @@ message CreateUsersRequest {
     repeated string initial_access_uuids = 12;  // Non-mandatory
     repeated string initial_group_uuids = 13; // Non-mandatory. Used just for backward-compatibility, would be obsolete soon
     repeated string initial_group_set_uuids = 14; // Non-mandatory. Used just for backward-compatibility, would be obsolete soon
+    CreatePincode pincode = 15; // Non-mandatory
   }
 
   string organization_slug = 1;

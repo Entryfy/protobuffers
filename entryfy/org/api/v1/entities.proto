@@ -122,7 +122,7 @@ message User {
     map<string, string> preferences = 12;
     repeated Pincode pincodes = 13;
     repeated KeyCard key_cards = 14;
-    repeated string roles = 15; // [orgadmin, operator, guest, normal] only
+    repeated string roles = 15; // [orgadmin, operator, guest, normal, hardware_manager, security, developer] only
     google.protobuf.Timestamp created_at = 16;
     google.protobuf.Timestamp updated_at = 17;
     string uuid = 18;
@@ -360,6 +360,7 @@ message AccessLog {
     string user_email = 11; // Could be also taken from the user entity
     string user_name = 12; // Could be also taken from the user entity
     string pincode_uuid = 13;
+    string pincode_value = 14;
 }
 
 message IndoorSession {
