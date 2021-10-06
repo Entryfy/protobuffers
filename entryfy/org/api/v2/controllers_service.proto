@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package entryfy.org.api.v2;
+import "google/protobuf/timestamp.proto";
+
+option go_package = "pkg/entryfy/org/api/v2";
+option java_multiple_files = true;
+option java_package = "com.entryfy.org.api.v2";
+option csharp_namespace = "Entryfy.Org.Api.V2";
+option ruby_package = "Entryfy::Org::Api::V2";
+
+service ControllersService {
+  rpc GetControllers (GetControllersRequest) returns (GetControllersResponse) {
+  }
+}
+
+// NOTE: filter could not be combined, e.g. you should either use "uuids" or "site_uuids"
+message GetControllersRequest {
+  string organization_slug = 1;
+  repeated string uuids = 2; // Non-mandatory: get only controllers with specified UUIDs
+  repeated string site_uuids = 3; // Non-mandatory: find only controllers of specified sites
+  repeated string section_uuids = 4; // Non-mandatory: find only controllers of specified sections
+}
+
+message GetControllersResponse {
+  message Controller {
+    string uuid = 1;
+    string site_uuid = 2;
+    string section_uuid = 3;
+    string name = 4;
+    string description = 5;
+    map<string, string> preferences = 6; // Arbitrary map of string preferences
+    bool online = 7;
+    bool maintenance = 8;
+    google.protobuf.Timestamp created_at = 9;
+    google.protobuf.Timestamp updated_at = 10;
+  }
+
+  repeated Controller controllers = 1;
+
+}

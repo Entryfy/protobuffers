@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package entryfy.org.api.v2;
+import "entryfy/org/api/v2/common.proto";
+
+option go_package = "pkg/entryfy/org/api/v2";
+option java_multiple_files = true;
+option java_package = "com.entryfy.org.api.v2";
+option csharp_namespace = "Entryfy.Org.Api.V2";
+option ruby_package = "Entryfy::Org::Api::V2";
+
+service OrganizationsService {
+  rpc GetOrganization (GetOrganizationRequest) returns (GetOrganizationResponse) {
+  }
+  rpc UpdateOrganization (UpdateOrganizationRequest) returns (UpdateOrganizationResponse) {
+  }
+}
+
+enum Locale {
+  LOCALE_UNKNOWN = 0;
+  LOCALE_EN_GB = 1;
+  LOCALE_SV_SE = 2;
+}
+
+message Organization {
+  string slug = 1;
+  string parent_slug = 2;
+  string name = 3;
+  string description = 4; // Not used for now
+  bool maintenance = 5;
+  bool active = 6;
+  repeated AuthType default_auth_types = 7;
+  string webhook_url = 8;
+  bool qr_auto_regeneration_enabled = 9; // Read-only
+  Time qr_auto_regeneration_time = 10; // Read-only
+  map<string, string> preferences = 11; // Arbitrary string data dictionary. Not used for now.
+  Locale default_locale = 12;
+  message BrandSettings {
+    string default_url = 1;
+    string default_support_url = 2;
+    string default_email_signature = 3;
+    string default_logo_url = 4;
+    string default_email_title = 5;
+  }
+  BrandSettings brand_settings = 14;
+}
+
+message GetOrganizationRequest {
+  string organization_slug = 1;
+}
+
+message GetOrganizationResponse {
+  Organization organization = 1;
+}
+
+message UpdateOrganizationRequest {
+  message OrganizationBody {
+    string name = 1;
+    string description = 2; // Not used for now
+    repeated AuthType default_auth_types = 3;
+    string webhook_url = 4;
+    map<string, string> preferences = 5; // Arbitrary string data dictionary. Not used for now.
+    Locale default_locale = 12;
+    message BrandSettings {
+      string default_url = 1;
+      string default_support_url = 2;
+      string default_email_signature = 3;
+      bytes default_logo_image = 4;// Binary Image. Max size is 150x150. Note: Upload in case of updating image ONLY.
+      string default_email_title = 5;
+    }
+    BrandSettings brand_settings = 13;
+  }
+
+  string organization_slug = 1;
+  OrganizationBody organization_body = 2;
+}
+
+message UpdateOrganizationResponse {
+  Organization organization = 1;
+}

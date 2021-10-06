@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package entryfy.org.api.v2;
+import "google/protobuf/timestamp.proto";
+
+option go_package = "pkg/entryfy/org/api/v2";
+option java_multiple_files = true;
+option java_package = "com.entryfy.org.api.v2";
+option csharp_namespace = "Entryfy.Org.Api.V2";
+option ruby_package = "Entryfy::Org::Api::V2";
+
+
+service IndoorSessionsService {
+    rpc GetIndoorSessions (GetIndoorSessionsRequest) returns (GetIndoorSessionsResponse) {
+    }
+}
+
+message GetIndoorSessionsRequest {
+    string organization_slug = 1;
+    google.protobuf.Timestamp start_date = 2; // NON-Mandatory. Use for filtering. End time - 1 day is taken by default
+    google.protobuf.Timestamp end_date = 3; // NON-Mandatory. Use for filtering. Current time is taken by default  
+    repeated string user_uuids = 4; // NON-Mandatory. Use for filtering
+    repeated string checkpoint_uuids = 5; // NON-Mandatory. Use for filtering
+    bool is_tailgated = 6; // NON-Mandatory. Use for filtering
+
+    enum Order {
+        ORDER_UNSPECIFIED = 0;
+        ORDER_ASC = 1;
+        ORDER_DESC = 2;
+    }
+    Order order = 7;
+}
+
+message GetIndoorSessionsResponse {
+    message IndoorSession {
+        string uuid = 1;
+        google.protobuf.Timestamp start_time = 2;
+        google.protobuf.Timestamp end_time = 3;
+        bool is_tailgated = 4;
+        string checkpoint_uuid = 5;
+        string user_uuid = 6;
+    }
+    repeated IndoorSession indoor_sessions = 1;
+}

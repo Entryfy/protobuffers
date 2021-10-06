@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package entryfy.org.api.v2;
+import "google/protobuf/timestamp.proto";
+
+option go_package = "pkg/entryfy/org/api/v2";
+option java_multiple_files = true;
+option java_package = "com.entryfy.org.api.v2";
+option csharp_namespace = "Entryfy.Org.Api.V2";
+option ruby_package = "Entryfy::Org::Api::V2";
+
+
+// Serevices
+service CheckpointsService {
+    rpc GetCheckpoints (GetCheckpointsRequest) returns (GetCheckpointsResponse) {
+    }
+    rpc CreateCheckpoints (CreateCheckpointsRequest) returns (CreateCheckpointsResponse) {
+    }
+    rpc UpdateCheckpoints (UpdateCheckpointsRequest) returns (UpdateCheckpointsResponse) {
+    }
+    rpc DeleteCheckpoints (DeleteCheckpointsRequest) returns (DeleteCheckpointsResponse) {
+    }
+}
+
+// Entities
+message Checkpoint {
+    string uuid = 1;
+    string name = 2;
+    string description = 3;
+    repeated string door_uuids = 4;
+    google.protobuf.Timestamp created_at = 5;
+    google.protobuf.Timestamp updated_at = 6;
+}
+
+message GetCheckpointsRequest {
+    string organization_slug = 1;
+    repeated string uuids = 2; // All checkpoints returned if UUIDs not set
+}
+
+message GetCheckpointsResponse {
+    repeated Checkpoint checkpoints = 1;
+}
+
+message CreateCheckpointsRequest {
+    message CreateCheckpoint {
+        string uuid = 1;
+        string name = 2;
+        string description = 3;
+        repeated string door_uuids = 4;
+    }
+    string organization_slug = 1;
+    repeated CreateCheckpoint checkpoints = 2;
+}
+
+message CreateCheckpointsResponse {
+    repeated Checkpoint checkpoints = 1;
+}
+
+message UpdateCheckpointsRequest {
+    message UpdateCheckpoint {
+        string uuid = 1;
+        string name = 2;
+        string description = 3;
+        repeated string door_uuids = 4;
+    }
+    string organization_slug = 1;
+    repeated UpdateCheckpoint checkpoints = 2;
+}
+
+message UpdateCheckpointsResponse {
+    repeated Checkpoint checkpoints = 1;
+}
+
+message DeleteCheckpointsRequest {
+    string organization_slug = 1;
+    repeated string uuids = 2;
+}
+
+message DeleteCheckpointsResponse {
+}

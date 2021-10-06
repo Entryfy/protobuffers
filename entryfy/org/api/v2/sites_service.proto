@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package entryfy.org.api.v2;
+import "google/protobuf/timestamp.proto";
+
+option go_package = "pkg/entryfy/org/api/v2";
+option java_multiple_files = true;
+option java_package = "com.entryfy.org.api.v2";
+option csharp_namespace = "Entryfy.Org.Api.V2";
+option ruby_package = "Entryfy::Org::Api::V2";
+
+service SitesService {
+  rpc GetSites (GetSitesRequest) returns (GetSitesResponse) {
+  }
+}
+
+message GetSitesRequest {
+  string organization_slug = 1;
+  repeated string uuids = 2; // Non-mandatory: get only sites with specified UUIDs
+}
+
+message GetSitesResponse {
+  message Site {
+    string uuid = 1;
+    string name = 2;
+    string description = 3;
+    string timezone = 4;
+    double latitude = 5;
+    double longitude = 6;
+    bool remote_open_distance_restricted = 7;
+    uint32 remote_open_max_distance_meters = 8;
+    map<string, string> preferences = 9; // Arbitrary map of string preferences
+    google.protobuf.Timestamp created_at = 10;
+    google.protobuf.Timestamp updated_at = 11;
+  }
+
+  repeated Site sites = 1;
+
+}

@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package entryfy.org.api.v2;
+import "google/protobuf/timestamp.proto";
+
+option go_package = "pkg/entryfy/org/api/v2";
+option java_multiple_files = true;
+option java_package = "com.entryfy.org.api.v2";
+option csharp_namespace = "Entryfy.Org.Api.V2";
+option ruby_package = "Entryfy::Org::Api::V2";
+
+// Services
+service ActivitiesService {
+    rpc GetActivities (GetActivitiesRequest) returns (GetActivitiesResponse) {
+    }
+}
+
+message GetActivitiesRequest {
+    string organization_slug = 1;
+    repeated string user_uuids = 2; // Mandatory
+    google.protobuf.Timestamp start_date = 3; // Non-mandatory, month ago by default
+    google.protobuf.Timestamp end_date = 4; // Non-mandatory, current day default
+}
+
+message GetActivitiesResponse {
+    message Activity {
+        string uuid = 1;
+        enum Kind {
+            KIND_UNSPECIFIED = 0;
+            KIND_DOOR_ACCESS_GRANTED = 1;
+            KIND_DOOR_ACCESS_DENIED = 2;
+            KIND_KEY_CARD_ADDED = 3;
+            KIND_ADD_KEY_CARD_FAILED = 4;
+        }
+        Kind kind = 2;
+        google.protobuf.Timestamp created_at = 3;
+        google.protobuf.Timestamp updated_at = 4;
+        string user_uuid = 5;
+    }
+    repeated Activity activities = 1;
+}

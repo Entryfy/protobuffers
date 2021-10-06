@@ -1,0 +1,94 @@
+syntax = "proto3";
+
+package entryfy.org.api.v2;
+import "google/protobuf/timestamp.proto";
+import "entryfy/org/api/v2/common.proto";
+
+option go_package = "pkg/entryfy/org/api/v2";
+option java_multiple_files = true;
+option java_package = "com.entryfy.org.api.v2";
+option csharp_namespace = "Entryfy.Org.Api.V2";
+option ruby_package = "Entryfy::Org::Api::V2";
+
+service DoorsService {
+  rpc GetDoors (GetDoorsRequest) returns (GetDoorsResponse) {
+  }
+  rpc RemoteOpen (RemoteOpenRequest) returns (RemoteOpenResponse) {
+  }
+  rpc WatchDoorStatusChanges (WatchDoorStatusChangesRequest) returns (stream WatchDoorStatusChangesResponse) {
+  }
+}
+
+// NOTE: filter could not be combined, e.g. you should either use "uuids" or "site_uuids"
+message GetDoorsRequest {
+  string organization_slug = 1;
+  repeated string uuids = 2; // Non-mandatory: get only doors with specified UUIDs
+  repeated string site_uuids = 3; // Non-mandatory: find only doors of specified sites
+  repeated string section_uuids = 4; // Non-mandatory: find only doors of specified sections
+  repeated string controller_uuids = 5; // Non-mandatory: find only doors of specified controllers
+}
+
+message GetDoorsResponse {
+  message Door {
+    string uuid = 1;
+    string site_uuid = 2;
+    string section_uuid = 3;
+    string controller_uuid = 4;
+    string name = 5;
+    string description = 6;
+    string in_qrcode = 7;
+    string out_qrcode = 8;
+    repeated AuthType allowed_in_auth_types = 9; // Auth types available for usage
+    repeated AuthType allowed_out_auth_types = 10; // Auth types available for usage
+    bool scheduled_lock_unlock_enabled = 11;
+    map<string, string> preferences = 12; // Arbitrary map of string preferences
+    bool online = 13;
+    google.protobuf.Timestamp created_at = 14;
+    google.protobuf.Timestamp updated_at = 15;
+  }
+
+  repeated Door doors = 1;
+
+}
+
+message RemoteOpenRequest {
+  message RequestData {
+    double latitude = 1; // User geo latitude if distance check is enabled, non-mandatory
+    double longitude = 2; // User geo longitude if distance check is enabled, non-mandatory
+    string app_platform = 3; // App platform/name, e.g. "Entryfy iOS"
+    string app_version = 4; // App version, e.g. current (mobile) app version like "1.2.3"
+    map<string, string> payload = 5; // Extra data to consider, could be used for debugging purposes
+  }
+  string organization_slug = 1; // Mandatory
+  RequestData request_data = 2;
+  string door_uuid = 3; // Door UUID, mandatory
+  string pin = 4; // User pin code, non-mandatory
+}
+
+message RemoteOpenResponse {
+}
+
+message WatchDoorStatusChangesRequest {
+  string organization_slug = 1;
+  repeated string door_uuids = 2; // Specifies doors to watch
+}
+
+message WatchDoorStatusChangesResponse {
+  message DoorStatus {
+    string uuid = 1;
+    string door_uuid = 2;
+    enum Status {
+      STATUS_UNSPECIFIED = 0;
+      STATUS_ACCESSED = 1;
+      STATUS_CLOSED = 2;
+      STATUS_UNLOCKED = 3;
+      STATUS_LOCKED = 4;
+      STATUS_DOUBLE_LOCKED = 5;
+      STATUS_OPEN = 6;
+    }
+    Status status = 3;
+    google.protobuf.Timestamp created_at = 4;
+    google.protobuf.Timestamp updated_at = 5;
+  }
+  repeated DoorStatus door_statuses = 1;
+}
